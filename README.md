@@ -12,4 +12,4 @@
 * the user and their performance will be recorded
 * performance will be compared to their average
 
-## UI and 
+## GUI mockups and  

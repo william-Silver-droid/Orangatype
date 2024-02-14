@@ -11,5 +11,6 @@
 * incorrect character will be highlighted in red
 * the user and their performance will be recorded
 * performance will be compared to their average
+* easter eggs
 
 ## GUI mockups and  

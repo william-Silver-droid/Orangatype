@@ -14,4 +14,4 @@
 * easter eggs
 
 ## GUI mockups and  
-[!url](https://github.com/william-Silver-droid/Orangutype/blob/main/images/Untitled_Artwork.jpg)
+![Outline](https://github.com/william-Silver-droid/Orangutype/blob/main/images/Untitled_Artwork.jpg)

@@ -15,3 +15,4 @@
 
 ## GUI mockups and  
 ![Outline](https://github.com/william-Silver-droid/Orangutype/blob/main/images/ModelOrangUtype.jpg)
+![Objects](https://github.com/william-Silver-droid/Orangutype/blob/main/images/objects.png)

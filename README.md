@@ -3,7 +3,7 @@
 ## Members
 * William : architect
 * Harvey : tester
-* Lyra : developer
+* Lyra : developer/designer
 * Felicia : developer
   
 ## Project Objectives 

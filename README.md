@@ -1,4 +1,4 @@
-# Orangatype
+# OrangUtype
 
 ## Members
 * William : architect

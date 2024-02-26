@@ -4,9 +4,8 @@ import numpy as np
 import time
 import csv
 import utils
-print("here")
 def main():
-  print("made it to main ")
+  
   pygame.init()
   white = (255, 255, 255)
   green = (0, 255, 0)
@@ -18,11 +17,16 @@ def main():
   text_font = pygame.font.SysFont("Arial", 30)
   print("right before run")
   run = True
+  
+  words = tg.generator(words=0, n_words=0)
+  words.load_words()
+  words.generate_text()
+  
   while run:
 
     screen.fill(white)
   
-    draw_text("Hello, Orangutype", text_font, (0, 0, 0), 0, 0, screen)
+    draw_text(words.type_words, text_font, (0, 0, 0), 0, 0, screen)
       
     for event in pygame.event.get():
       if event.type == pygame.QUIT:

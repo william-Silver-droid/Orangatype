@@ -15,7 +15,6 @@ def main():
   SCREEN_HEIGHT = 400
   screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
   text_font = pygame.font.SysFont("Arial", 30)
-  print("right before run")
   run = True
   
   words = tg.generator(words=0, n_words=0)

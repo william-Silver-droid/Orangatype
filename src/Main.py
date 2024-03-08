@@ -25,25 +25,29 @@ def main():
   text = text_font.render(":", True, black)
   current_string = []
   screen.blit(text, (110, 110))
+  screen.fill(white)
   while run:
-    screen.fill(white)
-    draw_text(words.type_words, text_font, (0, 0, 0), 0, 0, screen)
+    
+    maybe = draw_text(words.type_words, text_font, (0, 0, 0), 0, 0, screen)
     for event in pygame.event.get():
       if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
                 break
             elif event.key == pygame.K_BACKSPACE:
                 current_string = current_string[:-1]
+                screen.fill(white)
             else:
                 try:
                   print(chr(event.key))
                   current_string.append(chr(event.key))
                 except:
                    pass
-            print(current_string)
             typed = text_font.render(seperator.join(current_string), True, black)
+            print("typed", seperator.join(current_string))
+            print("words", maybe)
             screen.blit(typed, (0, 100))
-            if typed == words:
+            print(seperator.join(current_string) == maybe)
+            if seperator.join(current_string) == maybe:
                pygame.QUIT
       if event.type == pygame.QUIT:
         run = False
@@ -55,6 +59,7 @@ def main():
 def draw_text(text, font, text_col, x, y, screen):
   img = font.render(text, True, text_col)
   screen.blit(img, (x, y))
+  return text
 
 def text_input(prompt, font, screen, text_col):
     

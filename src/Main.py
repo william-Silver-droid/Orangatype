@@ -25,10 +25,10 @@ def main():
   text = text_font.render(":", True, black)
   current_string = []
   screen.blit(text, (110, 110))
-  screen.fill(white)
+  screen.fill(35, 35, 35)# Changes screen background to dark gray
   while run:
     
-    maybe = draw_text(words.type_words, text_font, (0, 0, 0), 0, 0, screen)
+    maybe = draw_text(words.type_words, text_font, (255, 165, 0), 0, 0, screen)#Changes text color to orange
     for event in pygame.event.get():
       if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:

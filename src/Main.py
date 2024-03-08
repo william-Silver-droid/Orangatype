@@ -6,7 +6,6 @@ import csv
 import utils
 import text_generator as tg
 def main():
-
   pygame.init()
   white = (255, 255, 255)
   green = (0, 255, 0)
@@ -15,7 +14,7 @@ def main():
   SCREEN_WIDTH = 10000
   SCREEN_HEIGHT = 10000
   screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-  text_font = pygame.font.SysFont("Arial", 30)
+  text_font = pygame.font.SysFont("Times New Roman", 30)
   run = True
   seperator = ""
   words = tg.generator(words=0, n_words=0)
@@ -25,10 +24,10 @@ def main():
   text = text_font.render(":", True, black)
   current_string = []
   screen.blit(text, (110, 110))
-  screen.fill(35, 35, 35)# Changes screen background to dark gray
+  screen.fill(white)
   while run:
     
-    maybe = draw_text(words.type_words, text_font, (255, 165, 0), 0, 0, screen)#Changes text color to orange
+    maybe = draw_text(words.type_words, text_font, (0, 0, 0), 0, 0, screen)
     for event in pygame.event.get():
       if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
@@ -46,9 +45,10 @@ def main():
             print("typed", seperator.join(current_string))
             print("words", maybe)
             screen.blit(typed, (0, 100))
-            print(seperator.join(current_string) == maybe)
-            if seperator.join(current_string) == maybe:
-               pygame.QUIT
+            print(seperator.join(current_string) == maybe[:-1])
+            if seperator.join(current_string) == maybe[:-1]:
+               print("here")
+               pygame.quit()
       if event.type == pygame.QUIT:
         run = False
     pygame.display.flip()

@@ -7,10 +7,13 @@ import utils
 import text_generator as tg
 def main():
   pygame.init()
+  #color declarations
   white = (255, 255, 255)
   green = (0, 255, 0)
   blue = (0, 0, 128)
   black = (0,0,0)
+  orange = (255, 165, 0)
+  gray = (35, 35, 35)
   SCREEN_WIDTH = 10000
   SCREEN_HEIGHT = 10000
   screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -24,10 +27,10 @@ def main():
   text = text_font.render(":", True, black)
   current_string = []
   screen.blit(text, (110, 110))
-  screen.fill(white)
+  screen.fill(gray)# Change the RGB tuple to the desired background color
   while run:
     
-    maybe = draw_text(words.type_words, text_font, (0, 0, 0), 0, 0, screen)
+    maybe = draw_text(words.type_words, text_font, (orange), 0, 0, screen)
     for event in pygame.event.get():
       if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:

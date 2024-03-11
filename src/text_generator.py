@@ -26,7 +26,7 @@ class generator():
             self.words.append(row)
     self.n_words = len(self.words)
     
-  def generate_text(self):
+  def generate_text(self): # generates word for printing
     print(self.n_words)
     for i in range(self.n):
       self.type_words += self.words[random.randint(0, self.n_words)][0]

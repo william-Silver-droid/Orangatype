@@ -5,6 +5,7 @@ import time
 import csv
 import utils
 import text_generator as tg  # Importing custom module text_generator as tg
+import nltk #for BLEUscore
 
 def main():
     pygame.init()  # Initialize pygame

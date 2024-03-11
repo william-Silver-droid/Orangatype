@@ -3,10 +3,16 @@ import numpy as np
 import nltk
 #this is the coach class made to be the timer and score keeper
 class coach:
-  oran_text = key
-  user_text = user_typed
-  BLEUscore = nltk.translate.bleu_score.sentence_bleu([reference], hypothesis) 
-  Acc_score = Bleuscore*100
-  print(Acc_score)
+  def __init__(self, key, user_typed) -> None:
+    self.key = key
+    self.user_typed = user_typed
+def calc_acc(self):
+    oran_text = self.key.split()
+    user_text = self.user_typed.split()
+    user_text = user_text[0 :len(user_text)]
+    BLEUscore = nltk.translate.bleu_score.sentence_bleu(oran_text, user_text) 
+    Acc_score = BLEUscore*100
+    print(Acc_score)
+    return(Acc_score)
 
   

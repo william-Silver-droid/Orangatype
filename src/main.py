@@ -44,7 +44,7 @@ def main():
                     break
                 elif event.key == pygame.K_BACKSPACE:
                     current_string = current_string[:-1]  # Removing the last character from the string
-                    screen.fill(white)  # Filling the screen with white color
+                    screen.fill(white)  # Filling the screen with white color - prevents overlay
                 else:
                     try:
                         print(chr(event.key))

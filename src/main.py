@@ -4,6 +4,7 @@ import numpy as np
 import time
 import csv
 import utils
+from coach import coach
 import text_generator as tg  # Importing custom module text_generator as tg
 
 def main():
@@ -48,11 +49,15 @@ def main():
                       current_string = current_string[:-1]  # Removing the last character from the string
                       screen.fill(gray)  # Filling the screen with white color
                   else:
-                      try:
-                          print(chr(event.key))
-                          current_string.append(chr(event.key))  # Appending the character to the string
-                      except:
-                          pass
+                    try:
+                      print(chr(event.key))
+                      current_string.append(chr(event.key))
+                    except:
+                        pass  
+                    c = coach(maybe, separator.join(current_string))
+
+                    print("aac",c.calc_acc())  # Appending the character to the string
+
                   typed = text_font.render(separator.join(current_string), True, orange)  # Rendering typed text
                   print("typed", separator.join(current_string))
                   print("words", maybe)

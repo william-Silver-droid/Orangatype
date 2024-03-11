@@ -49,6 +49,7 @@ def main():
             print("words", maybe)
             screen.blit(typed, (0, 100))
             print(seperator.join(current_string) == maybe[:-1])
+            user_typed = seperator.join(current_string)
             if seperator.join(current_string) == maybe[:-1]:
                print("here")
                pygame.quit()

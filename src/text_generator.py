@@ -5,9 +5,10 @@ class generator():
   words = []
   type_words = ""
   n_words = 0
-  def __init__(self, words, n_words):
+  def __init__(self, words, n_words, n):
     self.words = words
     self.n_words = n_words
+    self.n = n
     self.words_path = ""
     self.type_words = ""
   def load_words(self):
@@ -27,7 +28,7 @@ class generator():
     
   def generate_text(self):
     print(self.n_words)
-    for i in range(5):
+    for i in range(self.n):
       self.type_words += self.words[random.randint(0, self.n_words)][0]
       self.type_words += " "
     return self.type_words

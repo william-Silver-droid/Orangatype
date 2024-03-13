@@ -86,7 +86,7 @@ def main():
 def end_screen(screen, graph_image):
     run = False
     button_rect = pygame.Rect(300, 700, 100, 50)  # Button position and dimensions
-    button_color = (0, 255, 0)  # Green color for the button
+    button_color = (orange)  # Green color for the button
     
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -128,7 +128,7 @@ def main_screen(words, text_font, color1, color2, start_time, SCREEN_WIDTH, SCRE
                 run = False
             elif event.key == pygame.K_BACKSPACE:
                 current_string = current_string[:-1]  # Removing the last character from the string
-                screen.fill(color2)  # Filling the screen with white color
+                screen.fill(gray)  # Filling the screen with white color
             else:
                 try:
                     current_string.append(chr(event.key))

@@ -4,7 +4,7 @@ import numpy as np
 import time
 import csv
 import utils
-from coach import coach
+
 import matplotlib.pyplot as plt
 import text_generator as tg  # Importing custom module text_generator as tg
 import start

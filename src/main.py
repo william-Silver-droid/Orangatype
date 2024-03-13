@@ -5,11 +5,19 @@ import time
 import csv
 import utils
 from coach import coach
+import matplotlib.pyplot as plt
 import text_generator as tg  # Importing custom module text_generator as tg
+import start
 
 def main():
-    pygame.init()  # Initialize pygame
+    global accuracies
+    global wpms
+    global times
 
+    accuracies = []
+    wpms = []
+    times = []
+    pygame.init()  # Initialize pygame
     # Color declarations
     white = (255, 255, 255)
     green = (0, 255, 0)
@@ -18,9 +26,9 @@ def main():
     orange = (255, 165, 0)
     gray = (35, 35, 35)
 
-    SCREEN_WIDTH = 10000
-    SCREEN_HEIGHT = 10000
-
+    SCREEN_WIDTH = 1000
+    SCREEN_HEIGHT = 1000
+    clock = pygame.time.Clock()
     # Setting up the display screen
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     text_font = pygame.font.SysFont("Times New Roman", 30)
@@ -37,75 +45,94 @@ def main():
     screen.fill(gray)  # Filling the screen with a gray background
     num_words = []
     starting = True
+    start_time = None
+    wpm = 0
+    accuracy = 0
+    start_time = 0
     while run:
         # Drawing text on the screen
-        if starting == False:
-          maybe = draw_text(words.type_words, text_font, orange, 0, 0, screen)
-          for event in pygame.event.get():
-              if event.type == pygame.KEYDOWN:
-                  if event.key == pygame.K_RETURN:
-                      break
-                  elif event.key == pygame.K_BACKSPACE:
-                      current_string = current_string[:-1]  # Removing the last character from the string
-                      screen.fill(gray)  # Filling the screen with white color
-                  else:
-                    try:
-                      print(chr(event.key))
-                      current_string.append(chr(event.key))
-                    except:
-                        pass  
-                    c = coach(maybe, separator.join(current_string))
-
-                    print("aac",c.calc_acc())  # Appending the character to the string
-
-                  typed = text_font.render(separator.join(current_string), True, orange)  # Rendering typed text
-                  print("typed", separator.join(current_string))
-                  print("words", maybe)
-                  screen.blit(typed, (0, 100))
-                  print(separator.join(current_string) == maybe[:-1])
-                  user_typed = separator.join(current_string)
-                  if separator.join(current_string) == maybe[:-1]:  # Checking if typed text matches generated text
-                      print("here")
-                      pygame.quit()  # Quitting pygame
-              if event.type == pygame.QUIT:
-                  run = False
-          pygame.display.flip()  # Updating the display
+        if not starting:
+            wpm, accuracy, etime, current_string, run, start_time = main_screen(words, text_font, orange, gray, start_time, SCREEN_WIDTH, SCREEN_HEIGHT, screen, separator, current_string, wpm, accuracy)
+            accuracies.append(accuracy)
+            wpms.append(wpm)
+            times.append(etime)
+            pygame.display.flip()  # Updating the display
         else:
-          maybe = draw_text("How many words do you want to type", text_font, orange, 0, 0, screen)
-          for event in pygame.event.get():
-              if event.type == pygame.KEYDOWN:
-                  if event.key == pygame.K_RETURN:
-                      screen.fill(gray)
-                      starting = False
-                      n = num_words
-                      words = tg.generator(words=0, n_words=0, n=int(separator.join(n)))  # Creating an instance of text_generator
-                      words.load_words()  # Loading words
-                      words.generate_text()
-                      num_words = ""
-                  elif event.key == pygame.K_BACKSPACE:
-                      num_words = num_words[:-1]  # Removing the last character from the string
-                      screen.fill(gray)  # Filling the screen with white color
-                  else:
-                      try:
-                          print(chr(event.key))
-                          num_words.append(chr(event.key))  # Appending the character to the string
-                      except:
-                          pass
-                  typedw = text_font.render(separator.join(num_words), True, black)  # Rendering typed text
-                  print("typed", separator.join(num_words))
-                  print("words", maybe)
-                  screen.blit(typedw, (0, 100))
-                  print(separator.join(num_words) == maybe[:-1])
-                  user_typed = separator.join(num_words)
-                  if separator.join(num_words) == maybe[:-1]:  # Checking if typed text matches generated text
-                      print("here")
-                      pygame.quit()  # Quitting pygame
-              if event.type == pygame.QUIT:
-                  run = False
-          pygame.display.flip()  # Updating the display
+            start = start_screen(text_font, orange, screen, black, separator, num_words)
+            if start:
+                words, starting = start
+        clock.tick(60)
+  # Quitting pygame
+    print(wpms)
+    w = wpms[0]
+    counter = 0
+    while w == 0:
+        w = wpms[counter]
+        counter += 1
+    print(counter)
+    accuracies = accuracies[counter+10:]
+    times = times[counter+10:]
+    wpms = wpms[counter+10:]
+    plt.figure(figsize=(8, 6))
+    plt.plot(times, wpms, label='Words per minute', marker='x')
+    plt.plot(times, accuracies, label='Accuracies', marker='o')
 
-    pygame.quit()  # Quitting pygame
-    return 0
+    # Adding labels and title
+    plt.xlabel('Time')
+    plt.ylabel('Words or %')
+    plt.title('Accuracy and WPM with respect to time')
+    plt.legend()
+    plt.savefig('graph.png')
+    graph_image = pygame.image.load('graph.png')
+    while not run:
+        end_screen(screen, graph_image)
+
+def end_screen(screen, graph_image):
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+        # Draw the graph image onto the screen
+    screen.fill((255, 255, 255))
+    screen.blit(graph_image, (0, 0))
+    pygame.display.flip()
+
+
+def main_screen(words, text_font, color1, color2, start_time, SCREEN_WIDTH, SCREEN_HEIGHT, screen, separator, current_string, wpm, accuracy):
+    user_typed= separator.join(current_string)
+    run = True
+    if wpm == 0:
+        start_time = time.time()
+    screen.fill((35, 35, 35))
+    key = draw_text(words.type_words.lower(), text_font, color1, 0, SCREEN_WIDTH // 4, screen)
+    typed = text_font.render(separator.join(current_string), True, color1)  # Rendering typed text
+    screen.blit(typed, (0, SCREEN_WIDTH // 3.5))
+    display_circle_numbers(wpm, accuracy, color1, SCREEN_WIDTH, screen)
+
+    for event in pygame.event.get():
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_RETURN:
+                run = False
+            elif event.key == pygame.K_BACKSPACE:
+                current_string = current_string[:-1]  # Removing the last character from the string
+                screen.fill(color2)  # Filling the screen with white color
+            else:
+                try:
+                    current_string.append(chr(event.key))
+                except:
+                    pass
+
+            user_typed = separator.join(current_string)
+            accuracy = calculate_accuracy(user_typed, key)
+
+            display_circle_numbers(wpm, accuracy, color1, SCREEN_WIDTH, screen)
+            if user_typed == key[:-1]:  # Checking if typed text matches generated text
+                run = False  # Quitting pygame
+    elapsed_time = time.time() - start_time
+    wpm = calculate_wpm(user_typed, elapsed_time)
+    return wpm, accuracy, elapsed_time, current_string, run, start_time
+
+
 
 def draw_text(text, font, text_col, x, y, screen):
     # Rendering text and drawing it on the screen
@@ -113,23 +140,81 @@ def draw_text(text, font, text_col, x, y, screen):
     screen.blit(img, (x, y))
     return text
 
-def text_input(prompt, font, screen, text_col):
-    # Function for handling text input
-    pygame.display.flip()
-    while True:
-        event = pygame.event.wait()
+def start_screen(text_font, color1, screen, color2, separator, num_words):
+    question = draw_text("How many words do you want to type", text_font, color1, 0, 0, screen)
+    for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
-                break
+                screen.fill(color2)
+                try:
+                    starting = False
+                    n = num_words
+                    words = tg.generator(words=0, n_words=0,
+                                         n=int(separator.join(n)))  # Creating an instance of text_generator
+                    words.load_words()  # Loading words
+                    words.generate_text()
+                    num_words = ""
+                    return words, starting
+                except:
+                    pass
             elif event.key == pygame.K_BACKSPACE:
-                current_string = current_string[:-1]
+                num_words = num_words[:-1]  # Removing the last character from the string
+                screen.fill(color2)  # Filling the screen with white color
             else:
-                current_string.append(chr(event.key))
-            text = font.render(prompt + ''.join(current_string), True, text_col)
-            screen.fill((255, 255, 255))
-            screen.blit(text, (10, 10))
-            pygame.display.flip()
-    return ''.join(current_string)
+                try:
+                    print(chr(event.key))
+                    num_words.append(chr(event.key))  # Appending the character to the string
+                except:
+                    pass
+            typed = text_font.render(separator.join(num_words), True, color1)  # Rendering typed text
+            screen.blit(typed, (0, 100))
+            print(separator.join(num_words) == question[:-1])
+            user_typed = separator.join(num_words)
+            if separator.join(num_words) == question[:-1]:  # Checking if typed text matches generated text
+                print("here")
+                pygame.quit()  # Quitting pygame
+        if event.type == pygame.QUIT:
+            run = False
+    pygame.display.flip()  # Updating the display
+
+def calculate_accuracy(typed_text, correct_text):
+    # Calculate the accuracy based on the number of correct characters up to the current point
+    total_correct_characters = sum(1 for a, b in zip(typed_text, correct_text[:len(typed_text)]) if a == b)
+    total_characters = len(typed_text)
+    accuracy = (total_correct_characters / total_characters) * 100 if total_characters > 0 else 0
+
+    return accuracy
+
+def calculate_wpm(typed_text, elapsed_time):
+    # Calculate the total number of characters typed
+    total_characters = len(typed_text)
+
+    # Calculate the WPM
+    wpm = (total_characters / 5) / (elapsed_time / 60) if elapsed_time > 0 else 0
+
+    return wpm
+
+
+def display_circle_numbers(left_number, right_number, color1, SCREEN_WIDTH, screen): #left = wpm righht= accuracy
+    # Clear the screen
+
+    # Draw circles
+    circle_radius = 50
+    circle_padding = 20
+    circle_y = circle_radius + circle_padding
+    circle_left_x = circle_radius + circle_padding
+    circle_right_x = SCREEN_WIDTH - circle_radius - circle_padding
+    pygame.draw.circle(screen, color1, (circle_left_x, circle_y), circle_radius)
+    pygame.draw.circle(screen, color1, (circle_right_x, circle_y), circle_radius)
+    # Render text
+    font = pygame.font.Font(None, 36)
+    text_left = font.render(str(left_number)[:3], True, (0, 0, 0))
+    text_right = font.render(str(right_number)[:3], True, (0, 0, 0))
+
+    text_left_rect = text_left.get_rect(center=(circle_left_x, circle_y))
+    text_right_rect = text_right.get_rect(center=(circle_right_x, circle_y))
+    screen.blit(text_left, text_left_rect)
+    screen.blit(text_right, text_right_rect)
 
 if __name__ == "__main__":
     main()  # Calling the main function if the script is executed directly

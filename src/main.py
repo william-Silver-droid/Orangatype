@@ -55,7 +55,7 @@ def main():
                 times.append(etime)
                 pygame.display.flip()  # Updating the display
             else:
-                start = start_screen(text_font, orange, screen, black, separator, num_words)
+                start = start_screen(text_font, orange, screen, gray, separator, num_words)
                 if start:
                     words, starting = start
             clock.tick(60)
@@ -71,8 +71,8 @@ def main():
         times = times[counter+10:]
         wpms = wpms[counter+10:]
         plt.figure(figsize=(8, 6))
-        plt.plot(times, wpms, label='Words per minute', marker='x')
-        plt.plot(times, accuracies, label='Accuracies', marker='o')
+        plt.plot(times, wpms, label='Words per minute')
+        plt.plot(times, accuracies, label='Accuracies')
 
         # Adding labels and title
         plt.xlabel('Time')
@@ -83,11 +83,11 @@ def main():
         graph_image = pygame.image.load('graph.png')
         while not run:
             run = end_screen(screen, graph_image)
-
 def end_screen(screen, graph_image):
     run = False
     button_rect = pygame.Rect(300, 700, 100, 50)  # Button position and dimensions
     button_color = (0, 255, 0)  # Green color for the button
+    
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -95,10 +95,17 @@ def end_screen(screen, graph_image):
             if button_rect.collidepoint(event.pos):  # Check if the click is inside the button
                 run = True
 
-        # Draw the graph image onto the screen
+    # Draw the graph image onto the screen
     screen.fill((255, 255, 255))
     screen.blit(graph_image, (0, 0))
+    
+    # Draw the button with the "restart" text
+    font = pygame.font.Font(None, 36)
+    text = font.render("Restart", True, (0, 0, 0))
+    text_rect = text.get_rect(center=button_rect.center)
     pygame.draw.rect(screen, button_color, button_rect)
+    screen.blit(text, text_rect)
+    
     pygame.display.flip()
     return run
 
@@ -214,8 +221,8 @@ def display_circle_numbers(left_number, right_number, color1, SCREEN_WIDTH, scre
     pygame.draw.circle(screen, color1, (circle_right_x, circle_y), circle_radius)
     # Render text
     font = pygame.font.Font(None, 36)
-    text_left = font.render(str(left_number)[:3], True, (0, 0, 0))
-    text_right = font.render(str(right_number)[:3], True, (0, 0, 0))
+    text_left = font.render(str(left_number)[:4], True, (0, 0, 0))
+    text_right = font.render(str(right_number)[:4], True, (0, 0, 0))
 
     text_left_rect = text_left.get_rect(center=(circle_left_x, circle_y))
     text_right_rect = text_right.get_rect(center=(circle_right_x, circle_y))

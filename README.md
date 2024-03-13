@@ -17,7 +17,7 @@
 ![Outline](https://github.com/william-Silver-droid/Orangutype/blob/main/images/ModelOrangUtype.jpg)
 * Model of OrangUtype's visuals after rendering
   
-![Objects](https://github.com/william-Silver-droid/Orangutype/blob/main/images/objects.png)
+![Functions](https://github.com/william-Silver-droid/Orangutype/blob/main/images/g.png)
 * Arrows represent the overlay of class information
 * Seeks to be an Outline of OrangUtype code
 

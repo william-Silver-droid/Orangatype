@@ -20,3 +20,8 @@
 ![Objects](https://github.com/william-Silver-droid/Orangutype/blob/main/images/objects.png)
 * Arrows represent the overlay of class information
 * Seeks to be an Outline of OrangUtype code
+
+![screenshots](https://github.com/william-Silver-droid/Orangutype/blob/main/images/r.png)
+
+![screenshots](https://github.com/william-Silver-droid/Orangutype/blob/main/images/s.png)
+![screenshots](https://github.com/william-Silver-droid/Orangutype/blob/main/images/f.png)

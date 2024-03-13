@@ -154,7 +154,7 @@ def draw_text(text, font, text_col, x, y, screen):
     return text
 
 def start_screen(text_font, color1, screen, color2, separator, num_words):
-    question = draw_text("How many words do you want to type", text_font, color1, 0, 0, screen)
+    question = draw_text("How many words do you want to type", text_font, color1, SCREEN_WIDTH//2, 0, screen)
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:

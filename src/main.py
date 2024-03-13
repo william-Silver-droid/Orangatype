@@ -1,101 +1,107 @@
 import pygame  # Importing the pygame library for game development
-import random
-import numpy as np
 import time
-import csv
-import utils
-
 import matplotlib.pyplot as plt
 import text_generator as tg  # Importing custom module text_generator as tg
-import start
 
 def main():
     global accuracies
     global wpms
     global times
 
-    accuracies = []
-    wpms = []
-    times = []
+
     pygame.init()  # Initialize pygame
     # Color declarations
-    white = (255, 255, 255)
-    green = (0, 255, 0)
-    blue = (0, 0, 128)
-    black = (0, 0, 0)
-    orange = (255, 165, 0)
-    gray = (35, 35, 35)
+    while True:
+        accuracies = []
+        wpms = []
+        times = []
+        white = (255, 255, 255)
+        green = (0, 255, 0)
+        blue = (0, 0, 128)
+        black = (0, 0, 0)
+        orange = (255, 165, 0)
+        gray = (35, 35, 35)
 
-    SCREEN_WIDTH = 1000
-    SCREEN_HEIGHT = 1000
-    clock = pygame.time.Clock()
-    # Setting up the display screen
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-    text_font = pygame.font.SysFont("Times New Roman", 30)
-    run = True
-    separator = ""  # Variable to hold separator for joining strings
-    words = tg.generator(words=0, n_words=0, n=0)  # Creating an instance of text_generator
-    words.load_words()  # Loading words
-    words.generate_text()  # Generating text
+        SCREEN_WIDTH = 1000
+        SCREEN_HEIGHT = 1000
+        clock = pygame.time.Clock()
+        # Setting up the display screen
+        screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+        text_font = pygame.font.SysFont("Times New Roman", 30)
+        run = True
+        separator = ""  # Variable to hold separator for joining strings
+        words = tg.generator(words=0, n_words=0, n=0)  # Creating an instance of text_generator
+        words.load_words()  # Loading words
+        words.generate_text()  # Generating text
 
-    # Rendering text
-    text = text_font.render(":", True, orange)
-    current_string = []  # List to hold user input string
-    screen.blit(text, (110, 110))
-    screen.fill(gray)  # Filling the screen with a gray background
-    num_words = []
-    starting = True
-    start_time = None
-    wpm = 0
-    accuracy = 0
-    start_time = 0
-    while run:
-        # Drawing text on the screen
-        if not starting:
-            wpm, accuracy, etime, current_string, run, start_time = main_screen(words, text_font, orange, gray, start_time, SCREEN_WIDTH, SCREEN_HEIGHT, screen, separator, current_string, wpm, accuracy)
-            accuracies.append(accuracy)
-            wpms.append(wpm)
-            times.append(etime)
-            pygame.display.flip()  # Updating the display
-        else:
-            start = start_screen(text_font, orange, screen, black, separator, num_words)
-            if start:
-                words, starting = start
-        clock.tick(60)
-  # Quitting pygame
-    print(wpms)
-    w = wpms[0]
-    counter = 0
-    while w == 0:
-        w = wpms[counter]
-        counter += 1
-    print(counter)
-    accuracies = accuracies[counter+10:]
-    times = times[counter+10:]
-    wpms = wpms[counter+10:]
-    plt.figure(figsize=(8, 6))
-    plt.plot(times, wpms, label='Words per minute', marker='x')
-    plt.plot(times, accuracies, label='Accuracies', marker='o')
+        # Rendering text
+        text = text_font.render(":", True, orange)
+        current_string = []  # List to hold user input string
+        screen.blit(text, (110, 110))
+        screen.fill(gray)  # Filling the screen with a gray background
+        num_words = []
+        starting = True
+        start_time = None
+        wpm = 0
+        accuracy = 0
+        start_time = 0
 
-    # Adding labels and title
-    plt.xlabel('Time')
-    plt.ylabel('Words or %')
-    plt.title('Accuracy and WPM with respect to time')
-    plt.legend()
-    plt.savefig('graph.png')
-    graph_image = pygame.image.load('graph.png')
-    while not run:
-        end_screen(screen, graph_image)
+        while run:
+            # Drawing text on the screen
+            if not starting:
+                wpm, accuracy, etime, current_string, run, start_time = main_screen(words, text_font, orange, gray, start_time, SCREEN_WIDTH, SCREEN_HEIGHT, screen, separator, current_string, wpm, accuracy)
+                accuracies.append(accuracy)
+                wpms.append(wpm)
+                times.append(etime)
+                pygame.display.flip()  # Updating the display
+            else:
+                start = start_screen(text_font, orange, screen, black, separator, num_words)
+                if start:
+                    words, starting = start
+            clock.tick(60)
+      # Quitting pygame
+        print(wpms)
+        w = wpms[0]
+        counter = 0
+        while w == 0:
+            w = wpms[counter]
+            counter += 1
+        print(counter)
+        accuracies = accuracies[counter+10:]
+        times = times[counter+10:]
+        wpms = wpms[counter+10:]
+        plt.figure(figsize=(8, 6))
+        plt.plot(times, wpms, label='Words per minute', marker='x')
+        plt.plot(times, accuracies, label='Accuracies', marker='o')
+
+        # Adding labels and title
+        plt.xlabel('Time')
+        plt.ylabel('Words or %')
+        plt.title('Accuracy and WPM with respect to time')
+        plt.legend()
+        plt.savefig('graph.png')
+        graph_image = pygame.image.load('graph.png')
+        while not run:
+            run = end_screen(screen, graph_image)
 
 def end_screen(screen, graph_image):
+    run = False
+    button_rect = pygame.Rect(300, 700, 100, 50)  # Button position and dimensions
+    button_color = (0, 255, 0)  # Green color for the button
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:  # Check for left mouse button click
+            if button_rect.collidepoint(event.pos):  # Check if the click is inside the button
+                run = True
 
         # Draw the graph image onto the screen
     screen.fill((255, 255, 255))
     screen.blit(graph_image, (0, 0))
+    pygame.draw.rect(screen, button_color, button_rect)
     pygame.display.flip()
+    return run
+
 
 
 def main_screen(words, text_font, color1, color2, start_time, SCREEN_WIDTH, SCREEN_HEIGHT, screen, separator, current_string, wpm, accuracy):
